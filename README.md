@@ -1,16 +1,57 @@
-# React + Vite
+# PostulaTrack
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+PostulaTrack es una aplicación web diseñada para organizar y gestionar postulaciones laborales desde un único dashboard.
 
-Currently, two official plugins are available:
+El objetivo del proyecto es facilitar el seguimiento del proceso de búsqueda de empleo, permitiendo visualizar el estado de cada postulación, filtrar oportunidades y mantener un registro claro de cada proceso.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+Este proyecto está siendo desarrollado como parte de mi portfolio profesional, utilizando tecnologías modernas de desarrollo frontend.
 
-## React Compiler
+---
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+## Características actuales
 
-## Expanding the Oxlint configuration
+- Dashboard de postulaciones
+- Estadísticas dinámicas
+- Búsqueda por empresa o cargo
+- Filtro por estado
+- Visualización de postulaciones recientes
+- Diseño responsive
+- Interfaz en modo oscuro
+- Componentes reutilizables en React
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and Oxlint's TypeScript related rules in your project.
+---
+
+## Estados de postulación
+
+Actualmente el sistema permite clasificar postulaciones como:
+
+- Pendiente
+- Entrevista
+- Oferta
+- Rechazada
+
+---
+
+## Tecnologías utilizadas
+
+- React
+- JavaScript
+- Vite
+- CSS
+- Lucide React
+- Git
+- GitHub
+
+---
+
+## Estructura del proyecto
+
+```text
+src/
+├── components/
+│   └── StatCard.jsx
+├── data/
+│   └── applications.js
+├── App.jsx
+├── index.css
+└── main.jsx
