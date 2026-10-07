@@ -1,122 +1,238 @@
-import { useState } from 'react'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import './App.css'
+import { useMemo, useState } from "react";
+import {
+  BriefcaseBusiness,
+  Clock3,
+  CalendarCheck,
+  Trophy,
+  Search,
+  Plus,
+  LayoutDashboard,
+} from "lucide-react";
+
+import StatCard from "./components/StatCard";
+import { initialApplications } from "./data/applications";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [applications] = useState(initialApplications);
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("Todos");
+
+  const stats = {
+    total: applications.length,
+
+    pending: applications.filter(
+      (application) => application.status === "Pendiente"
+    ).length,
+
+    interviews: applications.filter(
+      (application) => application.status === "Entrevista"
+    ).length,
+
+    offers: applications.filter(
+      (application) => application.status === "Oferta"
+    ).length,
+  };
+
+  const filteredApplications = useMemo(() => {
+    return applications.filter((application) => {
+      const matchesSearch =
+        application.company.toLowerCase().includes(search.toLowerCase()) ||
+        application.position.toLowerCase().includes(search.toLowerCase());
+
+      const matchesStatus =
+        statusFilter === "Todos" ||
+        application.status === statusFilter;
+
+      return matchesSearch && matchesStatus;
+    });
+  }, [applications, search, statusFilter]);
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
-        </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
+    <div className="layout">
 
-      <div className="ticks"></div>
+      <aside className="sidebar">
+        <div className="brand">
+          <div className="brand-icon">
+            <BriefcaseBusiness size={20} />
+          </div>
 
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <span>PostulaTrack</span>
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
 
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+        <nav>
+          <button className="nav-item active">
+            <LayoutDashboard size={18} />
+            Dashboard
+          </button>
+        </nav>
+
+        <div className="sidebar-footer">
+          <span>PostulaTrack</span>
+          <small>Portfolio Project</small>
+        </div>
+      </aside>
+
+      <main className="main-content">
+
+        <header className="topbar">
+          <div>
+            <span className="eyebrow">
+              DASHBOARD
+            </span>
+
+            <h1>Mis postulaciones</h1>
+
+            <p>
+              Gestiona y analiza tu proceso de búsqueda laboral.
+            </p>
+          </div>
+
+          <button className="primary-button">
+            <Plus size={18} />
+            Nueva postulación
+          </button>
+        </header>
+
+        <section className="stats-grid">
+
+          <StatCard
+            title="Total"
+            value={stats.total}
+            icon={BriefcaseBusiness}
+          />
+
+          <StatCard
+            title="Pendientes"
+            value={stats.pending}
+            icon={Clock3}
+          />
+
+          <StatCard
+            title="Entrevistas"
+            value={stats.interviews}
+            icon={CalendarCheck}
+          />
+
+          <StatCard
+            title="Ofertas"
+            value={stats.offers}
+            icon={Trophy}
+          />
+
+        </section>
+
+        <section className="applications-panel">
+
+          <div className="panel-header">
+
+            <div>
+              <h2>Postulaciones recientes</h2>
+
+              <p>
+                {filteredApplications.length} resultados
+              </p>
+            </div>
+
+            <div className="filters">
+
+              <div className="search-box">
+                <Search size={17} />
+
+                <input
+                  type="text"
+                  placeholder="Buscar empresa o cargo..."
+                  value={search}
+                  onChange={(event) =>
+                    setSearch(event.target.value)
+                  }
+                />
+              </div>
+
+              <select
+                value={statusFilter}
+                onChange={(event) =>
+                  setStatusFilter(event.target.value)
+                }
+              >
+                <option>Todos</option>
+                <option>Pendiente</option>
+                <option>Entrevista</option>
+                <option>Oferta</option>
+                <option>Rechazada</option>
+              </select>
+
+            </div>
+
+          </div>
+
+          <div className="table-wrapper">
+
+            <table>
+
+              <thead>
+                <tr>
+                  <th>Empresa</th>
+                  <th>Cargo</th>
+                  <th>Modalidad</th>
+                  <th>Fecha</th>
+                  <th>Estado</th>
+                </tr>
+              </thead>
+
+              <tbody>
+
+                {filteredApplications.map((application) => (
+
+                  <tr key={application.id}>
+
+                    <td className="company">
+                      {application.company}
+                    </td>
+
+                    <td>
+                      {application.position}
+                    </td>
+
+                    <td>
+                      {application.modality}
+                    </td>
+
+                    <td>
+                      {application.date}
+                    </td>
+
+                    <td>
+
+                      <span
+                        className={`status status-${application.status.toLowerCase()}`}
+                      >
+                        {application.status}
+                      </span>
+
+                    </td>
+
+                  </tr>
+
+                ))}
+
+              </tbody>
+
+            </table>
+
+            {filteredApplications.length === 0 && (
+              <div className="empty-results">
+                No encontramos postulaciones.
+              </div>
+            )}
+
+          </div>
+
+        </section>
+
+      </main>
+
+    </div>
+  );
 }
 
-export default App
+export default App;
